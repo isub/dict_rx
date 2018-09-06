@@ -34,12 +34,11 @@
  * ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.								                                              *
  *********************************************************************************************************/
 
-
 /*********************************************************************************************************
 
- === Sabir Izrafilov (subbeer@gmail.com)  -  Nov/2016 ===
+ === Sabir Izrafilov (subbeer@gmail.com)  -  July/2018 ===
  === Dictionary Rx ===
- based on ETSI TS 129 214 V12.12.0 (2016-08)
+ based on ETSI TS 129 214 V13.12.0 (2018-01)
 
  *********************************************************************************************************/
 
@@ -163,11 +162,11 @@ static int dict_rx_entry (char *conffile)
     struct dict_type_data     data_type = { .type_base = AVP_TYPE_INTEGER32, .type_name = "Enumerated*(Abort-Cause)" };
     struct dict_object        *enum_type;
     struct dict_enumval_data  data_enum[] = {
-      { "BEARER_RELEASED",                          { .i32 = 0 } },
-      { "INSUFFICIENT_SERVER_RESOURCES",            { .i32 = 1 } },
-      { "INSUFFICIENT_BEARER_RESOURCES",            { .i32 = 2 } },
-      { "PS_TO_CS_HANDOVER",                        { .i32 = 3 } },
-      { "SPONSORED_DATA_CONNECTIVITY_ DISALLOWED",  { .i32 = 4 } }
+      { "BEARER_RELEASED",                         { .i32 = AC_BEARER_RELEASED                        } },
+      { "INSUFFICIENT_SERVER_RESOURCES",           { .i32 = AC_INSUFFICIENT_SERVER_RESOURCES          } },
+      { "INSUFFICIENT_BEARER_RESOURCES",           { .i32 = AC_INSUFFICIENT_BEARER_RESOURCES          } },
+      { "PS_TO_CS_HANDOVER",                       { .i32 = AC_PS_TO_CS_HANDOVER                      } },
+      { "SPONSORED_DATA_CONNECTIVITY_ DISALLOWED", { .i32 = AC_SPONSORED_DATA_CONNECTIVITY_DISALLOWED } }
     };
     struct dict_avp_data      data_avp = {
       500,
@@ -433,21 +432,22 @@ static int dict_rx_entry (char *conffile)
     struct dict_type_data     data_type = { .type_base = AVP_TYPE_INTEGER32, .type_name = "Enumerated*(Specific-Action)" };
     struct dict_object        *enum_type;
     struct dict_enumval_data  data_enum[] = {
-/*      { "Void", { .i32 = 0 } }, */
-      { "CHARGING_CORRELATION_EXCHANGE",           { .i32 = 1 } },
-      { "INDICATION_OF_LOSS_OF_BEARER",  { .i32 = 2 } },
-      { "INDICATION_OF_RECOVERY_OF_BEARER",  { .i32 = 3 } },
-      { "INDICATION_OF_RELEASE_OF_BEARER",  { .i32 = 4 } },
-/*      { "Void",  { .i32 = 5 } }, */
-      { "IP-CAN_CHANGE",  { .i32 = 6 } },
-      { "INDICATION_OF_OUT_OF_CREDIT",  { .i32 = 7 } },
-      { "INDICATION_OF_SUCCESSFUL_RESOURCES_ALLOCATION",  { .i32 = 8 } },
-      { "INDICATION_OF_FAILED_RESOURCES_ALLOCATION",  { .i32 = 9 } },
-      { "INDICATION_OF_LIMITED_PCC_DEPLOYMENT",  { .i32 = 10 } },
-      { "USAGE_REPORT",  { .i32 = 11 } },
-      { "ACCESS_NETWORK_INFO_REPORT",  { .i32 = 12 } },
+/*    { "Void",                                                { .i32 = 0 } }, */
+      { "CHARGING_CORRELATION_EXCHANGE",                       { .i32 = 1 } },
+      { "INDICATION_OF_LOSS_OF_BEARER",                        { .i32 = 2 } },
+      { "INDICATION_OF_RECOVERY_OF_BEARER",                    { .i32 = 3 } },
+      { "INDICATION_OF_RELEASE_OF_BEARER",                     { .i32 = 4 } },
+/*    { "Void",                                                { .i32 = 5 } }, */
+      { "IP-CAN_CHANGE",                                       { .i32 = 6 } },
+      { "INDICATION_OF_OUT_OF_CREDIT",                         { .i32 = 7 } },
+      { "INDICATION_OF_SUCCESSFUL_RESOURCES_ALLOCATION",       { .i32 = 8 } },
+      { "INDICATION_OF_FAILED_RESOURCES_ALLOCATION",           { .i32 = 9 } },
+      { "INDICATION_OF_LIMITED_PCC_DEPLOYMENT",                { .i32 = 10 } },
+      { "USAGE_REPORT",                                        { .i32 = 11 } },
+      { "ACCESS_NETWORK_INFO_REPORT",                          { .i32 = 12 } },
       { "INDICATION_OF_RECOVERY_FROM_LIMITED_PCC_DEPLOYMENT",  { .i32 = 13 } },
-      { "INDICATION_OF_ACCESS_NETWORK_INFO_REPORTING_FAILURE",  { .i32 = 14 } }
+      { "INDICATION_OF_ACCESS_NETWORK_INFO_REPORTING_FAILURE", { .i32 = 14 } },
+      { "INDICATION_OF_TRANSFER_POLICY_EXPIRED",               { .i32 = 15 } }
     };
     struct dict_avp_data      data_avp = {
       513,
@@ -818,6 +818,213 @@ static int dict_rx_entry (char *conffile)
     CHECK_DICT_NEW( DICT_AVP, &data_avp, NULL, NULL );
   }
 
+  /* Priority-Sharing-Indicator | 550 | 5.3.47 | Enumerated | M,V | P | | | Y */
+  {
+    size_t ind;
+    struct dict_type_data     data_type = { .type_base = AVP_TYPE_INTEGER32, .type_name = "Enumerated*(Priority-Sharing-Indicator)" };
+    struct dict_object        *enum_type;
+    struct dict_enumval_data  data_enum[] = {
+      { "PRIORITY_SHARING_ENABLED",  { .i32 = 0 } },
+      { "PRIORITY_SHARING_DISABLED", { .i32 = 1 } }
+    };
+    struct dict_avp_data      data_avp = {
+      511,
+      VENDOR_3GPP_ID,
+      "Flow-Status",
+      AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
+      AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
+      AVP_TYPE_INTEGER32
+    };
+    /* create enumerated type */
+    CHECK_DICT_NEW( DICT_TYPE, &data_type, NULL, &enum_type );
+    /* create enumerated values */
+    for (ind = 0; ind < sizeof(data_enum)/sizeof(*data_enum); ++ind) {
+      CHECK_DICT_NEW( DICT_ENUMVAL, &data_enum[ind], enum_type, NULL );
+    }
+    /* create avp */
+    CHECK_DICT_NEW( DICT_AVP, &data_avp, enum_type, NULL );
+  }
+
+  /* MCPTT-Identifier | 547 | 5.3.45 | OctetString | V | P | M | Y */
+  {
+    struct dict_avp_data      data_avp = {
+      547,
+      VENDOR_3GPP_ID,
+      "MCPTT-Identifier",
+      AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
+      AVP_FLAG_VENDOR,
+      AVP_TYPE_OCTETSTRING
+    };
+    /* create avp */
+    CHECK_DICT_NEW( DICT_AVP, &data_avp, NULL, NULL );
+  }
+
+  /* Reference-Id | 4202 | 3GPP TS 29.154[5.3.3] | OctetString | M,V | P | | */
+  {
+    struct dict_avp_data      data_avp = {
+      4202,
+      VENDOR_3GPP_ID,
+      "Reference-Id",
+      AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
+      AVP_FLAG_VENDOR,
+      AVP_TYPE_OCTETSTRING
+    };
+    /* create avp */
+    CHECK_DICT_NEW( DICT_AVP, &data_avp, NULL, NULL );
+  }
+
+  /* DRMP | 301 | RFC 7944[9.1] | Enumerated | | | | | */
+  {
+    size_t ind;
+    struct dict_type_data     data_type = { .type_base = AVP_TYPE_INTEGER32,.type_name = "Enumerated*(DRMP)" };
+    struct dict_object        *enum_type;
+    struct dict_enumval_data  data_enum[ ] = {
+      { "PRIORITY_0",  { .i32 =  0 } },
+      { "PRIORITY_1",  { .i32 =  1 } },
+      { "PRIORITY_2",  { .i32 =  2 } },
+      { "PRIORITY_3",  { .i32 =  3 } },
+      { "PRIORITY_4",  { .i32 =  4 } },
+      { "PRIORITY_5",  { .i32 =  5 } },
+      { "PRIORITY_6",  { .i32 =  6 } },
+      { "PRIORITY_7",  { .i32 =  7 } },
+      { "PRIORITY_8",  { .i32 =  8 } },
+      { "PRIORITY_9",  { .i32 =  9 } },
+      { "PRIORITY_10", { .i32 = 10 } },
+      { "PRIORITY_11", { .i32 = 11 } },
+      { "PRIORITY_12", { .i32 = 12 } },
+      { "PRIORITY_13", { .i32 = 13 } },
+      { "PRIORITY_14", { .i32 = 14 } },
+      { "PRIORITY_15", { .i32 = 15 } }
+    };
+    struct dict_avp_data      data_avp = {
+      301,
+      VENDOR_DIAM_ID,
+      "DRMP",
+      AVP_FLAG_MANDATORY,
+      0,
+      AVP_TYPE_INTEGER32
+    };
+    /* create enumerated type */
+    CHECK_DICT_NEW( DICT_TYPE, &data_type, NULL, &enum_type );
+    /* create enumerated values */
+    for ( ind = 0; ind < sizeof( data_enum ) / sizeof( *data_enum ); ++ind ) {
+      CHECK_DICT_NEW( DICT_ENUMVAL, &data_enum[ ind ], enum_type, NULL );
+    }
+    /* create avp */
+    CHECK_DICT_NEW( DICT_AVP, &data_avp, enum_type, NULL );
+  }
+
+  /* AN-GW-Address | 1050 | 3GPP TS 29.212[5.3.49] | Address | V | P | M | Y */
+  {
+    struct dict_avp_data      data_avp = {
+      1050,
+      VENDOR_3GPP_ID,
+      "AN-GW-Address",
+      AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
+      AVP_FLAG_VENDOR,
+      AVP_TYPE_OCTETSTRING
+    };
+    /* create avp */
+    CHECK_DICT_NEW( DICT_AVP, &data_avp, address_type, NULL );
+  }
+
+  /* AN-Trusted | 1503 | [5.2.3.9] | Enumerated | M,V | P | |  */
+  {
+    size_t ind;
+    struct dict_type_data     data_type = { .type_base = AVP_TYPE_INTEGER32,.type_name = "Enumerated*(AN-Trusted)" };
+    struct dict_object        *enum_type;
+    struct dict_enumval_data  data_enum[ ] = {
+      { "TRUSTED",   { .i32 = 0 } },
+      { "UNTRUSTED", { .i32 = 1 } }
+    };
+    struct dict_avp_data      data_avp = {
+      1503,
+      VENDOR_3GPP_ID,
+      "AN-Trusted",
+      AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
+      AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
+      AVP_TYPE_INTEGER32
+    };
+    /* create enumerated type */
+    CHECK_DICT_NEW( DICT_TYPE, &data_type, NULL, &enum_type );
+    /* create enumerated values */
+    for ( ind = 0; ind < sizeof( data_enum ) / sizeof( *data_enum ); ++ind ) {
+      CHECK_DICT_NEW( DICT_ENUMVAL, &data_enum[ ind ], enum_type, NULL );
+    }
+    /* create avp */
+    CHECK_DICT_NEW( DICT_AVP, &data_avp, enum_type, NULL );
+  }
+
+  /* Service-Authorization-Info | 548 | 5.3.46 | Unsigned32 | V | P | M | Y */
+  {
+    struct dict_avp_data      data_avp = {
+      548,
+      VENDOR_3GPP_ID,
+      "Service-Authorization-Info",
+      AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
+      AVP_FLAG_VENDOR,
+      AVP_TYPE_UNSIGNED32
+    };
+    /* create avp */
+    CHECK_DICT_NEW( DICT_AVP, &data_avp, NULL, NULL );
+  }
+
+  /* Retry-Interval | 541 | 5.3.39 | Unsigned32 | V | P | M | Y */
+  {
+    struct dict_avp_data      data_avp = {
+      541,
+      VENDOR_3GPP_ID,
+      "Retry-Interval",
+      AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
+      AVP_FLAG_VENDOR,
+      AVP_TYPE_UNSIGNED32
+    };
+    /* create avp */
+    CHECK_DICT_NEW( DICT_AVP, &data_avp, NULL, NULL );
+  }
+
+  /* TCP-Source-Port | 2843 | 3GPP TS 29.212[5.3.129] | Unsigned32 | V | P | M | Y */
+  {
+    struct dict_avp_data      data_avp = {
+      2843,
+      VENDOR_3GPP_ID,
+      "TCP-Source-Port",
+      AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
+      AVP_FLAG_VENDOR,
+      AVP_TYPE_UNSIGNED32
+    };
+    /* create avp */
+    CHECK_DICT_NEW( DICT_AVP, &data_avp, NULL, NULL );
+  }
+
+  /* UDP-Source-Port | 2806 | [5.3.97] | Unsigned32 | V | P | M | Y */
+  {
+    struct dict_avp_data      data_avp = {
+      2806,
+      VENDOR_3GPP_ID,
+      "UDP-Source-Port",
+      AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
+      AVP_FLAG_VENDOR,
+      AVP_TYPE_UNSIGNED32
+    };
+    /* create avp */
+    CHECK_DICT_NEW( DICT_AVP, &data_avp, NULL, NULL );
+  }
+
+  /* UE-Local-IP-Address | 2805 | 3GPP TS 29.212[5.3.96] | Address | V | P | M | Y */
+  {
+    struct dict_avp_data      data_avp = {
+      2805,
+      VENDOR_3GPP_ID,
+      "UE-Local-IP-Address",
+      AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
+      AVP_FLAG_VENDOR,
+      AVP_TYPE_OCTETSTRING
+    };
+    /* create avp */
+    CHECK_DICT_NEW( DICT_AVP, &data_avp, address_type, NULL );
+  }
+
   /* reused avp section ******************************************************/
   /*
     OC-OLR ::= < AVP Header: 623 >
@@ -999,14 +1206,14 @@ static int dict_rx_entry (char *conffile)
     struct dict_object *avp;
     struct dict_object *avp_type;
     struct dict_enumval_data  data_enum[] = {
-      { "INVALID_SERVICE_INFORMATION",              { .i32 =  5061 } },
-      { "FILTER_RESTRICTIONS",                      { .i32 =  5062 } },
-      { "REQUESTED_SERVICE_NOT_AUTHORIZED",         { .i32 =  5063 } },
-      { "DUPLICATED_AF_SESSION",                    { .i32 =  5064 } },
-      { "IP-CAN_SESSION_NOT_AVAILABLE",             { .i32 =  5065 } },
-      { "UNAUTHORIZED_NON_EMERGENCY_SESSION",       { .i32 =  5066 } },
-      { "UNAUTHORIZED_SPONSORED_DATA_CONNECTIVITY", { .i32 =  5067 } },
-      { "TEMPORARY_NETWORK_FAILURE",                { .i32 =  5068 } }
+      { "INVALID_SERVICE_INFORMATION",              { .i32 =  ERC_INVALID_SERVICE_INFORMATION              } },
+      { "FILTER_RESTRICTIONS",                      { .i32 =  ERC_FILTER_RESTRICTIONS                      } },
+      { "REQUESTED_SERVICE_NOT_AUTHORIZED",         { .i32 =  ERC_REQUESTED_SERVICE_NOT_AUTHORIZED         } },
+      { "DUPLICATED_AF_SESSION",                    { .i32 =  ERC_DUPLICATED_AF_SESSION                    } },
+      { "IP-CAN_SESSION_NOT_AVAILABLE",             { .i32 =  ERC_IP_CAN_SESSION_NOT_AVAILABLE             } },
+      { "UNAUTHORIZED_NON_EMERGENCY_SESSION",       { .i32 =  ERC_UNAUTHORIZED_NON_EMERGENCY_SESSION       } },
+      { "UNAUTHORIZED_SPONSORED_DATA_CONNECTIVITY", { .i32 =  ERC_UNAUTHORIZED_SPONSORED_DATA_CONNECTIVITY } },
+      { "TEMPORARY_NETWORK_FAILURE",                { .i32 =  ERC_TEMPORARY_NETWORK_FAILURE                } }
     };
 
     CHECK_DICT_SEARCH( DICT_AVP, AVP_BY_NAME, "Experimental-Result-Code", &avp);
@@ -1060,8 +1267,7 @@ static int dict_rx_entry (char *conffile)
       { "CDMA2000_1X",    { .i32 = 2000 } },
       { "HRPD",           { .i32 = 2001 } },
       { "UMB",            { .i32 = 2002 } },
-      { "EHRPD",          { .i32 = 2003 } },
-      { "EHRPD",{ .i32 = 2003 } }
+      { "EHRPD",          { .i32 = 2003 } }
     };
     struct dict_avp_data      data_avp = {
       1032,
@@ -1281,14 +1487,14 @@ static int dict_rx_entry (char *conffile)
       [ IP-Domain-Id ]
       [ Auth-Session-State ]
       [ AF-Application-Identifier ]
-      *[ Media-Component-Description ]
+     *[ Media-Component-Description ]
       [ Service-Info-Status ]
       [ AF-Charging-Identifier ]
       [ SIP-Forking-Indication ]
-      *[ Specific-Action ]
-      *[ Subscription-Id ]
+     *[ Specific-Action ]
+     *[ Subscription-Id ]
       [ OC-Supported-Features ]
-      *[ Supported-Features ]
+     *[ Supported-Features ]
       [ Reservation-Priority ]
       [ Framed-IP-Address ]
       [ Framed-IPv6-Prefix ]
@@ -1297,12 +1503,14 @@ static int dict_rx_entry (char *conffile)
       [ Sponsored-Connectivity-Data ]
       [ MPS-Identifier ]
       [ GCS-Identifier ]
+      [ MCPTT-Identifier ]
       [ Rx-Request-Type ]
-      *[ Required-Access-Info ]
+     *[ Required-Access-Info ]
+      [ Reference-Id ]
       [ Origin-State-Id ]
-      *[ Proxy-Info ]
-      *[ Route-Record ]
-      *[ AVP ]
+     *[ Proxy-Info ]
+     *[ Route-Record ]
+     *[ AVP ]
   */
   {
     struct dict_object *cmd;
@@ -1338,8 +1546,10 @@ static int dict_rx_entry (char *conffile)
       { { VENDOR_3GPP_ID, 0, "Sponsored-Connectivity-Data" }, RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_3GPP_ID, 0, "MPS-Identifier" },              RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_3GPP_ID, 0, "GCS-Identifier" },              RULE_OPTIONAL,   -1,  1 },
+      { { VENDOR_3GPP_ID, 0, "MCPTT-Identifier" },            RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_3GPP_ID, 0, "Rx-Request-Type" },             RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_3GPP_ID, 0, "Required-Access-Info" },        RULE_OPTIONAL,   -1, -1 },
+      { { VENDOR_3GPP_ID, 0, "Reference-Id" },                RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_DIAM_ID, 0, "Origin-State-Id" },             RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_DIAM_ID, 0, "Proxy-Info" },                  RULE_OPTIONAL,   -1, -1 },
       { { VENDOR_DIAM_ID, 0, "Route-Record" },                RULE_OPTIONAL,   -1, -1 }
@@ -1353,6 +1563,7 @@ static int dict_rx_entry (char *conffile)
   /* 5.6.2 AA-Answer (AAA) command
     <AA-Answer> ::= < Diameter Header: 265, PXY >
       < Session-Id >
+      [ DRMP ]
       { Auth-Application-Id }
       { Origin-Host }
       { Origin-Realm }
@@ -1362,6 +1573,9 @@ static int dict_rx_entry (char *conffile)
       *[ Access-Network-Charging-Identifier ]
       [ Access-Network-Charging-Address ]
       [ Acceptable-Service-Info ]
+   0*2[ AN-GW-Address ]
+      [ AN-Trusted ]
+      [ Service-Authorization-Info ]
       [ IP-CAN-Type ]
       [ NetLoc-Access-Support ]
       [ RAT-Type ]
@@ -1390,6 +1604,7 @@ static int dict_rx_entry (char *conffile)
     };
     struct local_rules_definition cmd_rules[] = {
       { { VENDOR_DIAM_ID, 0, "Session-Id" },                          RULE_FIXED_HEAD,  1,  1 },
+      { { VENDOR_DIAM_ID, 0, "DRMP" },                                RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_DIAM_ID, 0, "Auth-Application-Id" },                 RULE_REQUIRED,    1,  1 },
       { { VENDOR_DIAM_ID, 0, "Origin-Host" },                         RULE_REQUIRED,    1,  1 },
       { { VENDOR_DIAM_ID, 0, "Origin-Realm" },                        RULE_REQUIRED,    1,  1 },
@@ -1399,6 +1614,9 @@ static int dict_rx_entry (char *conffile)
       { { VENDOR_3GPP_ID, 0, "Access-Network-Charging-Identifier" },  RULE_OPTIONAL,   -1, -1 },
       { { VENDOR_3GPP_ID, 0, "Access-Network-Charging-Address" },     RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_3GPP_ID, 0, "Acceptable-Service-Info" },             RULE_OPTIONAL,   -1,  1 },
+      { { VENDOR_3GPP_ID, 0, "AN-GW-Address" },                       RULE_OPTIONAL,   -1,  2 },
+      { { VENDOR_3GPP_ID, 0, "AN-Trusted" },                          RULE_OPTIONAL,   -1,  1 },
+      { { VENDOR_3GPP_ID, 0, "Service-Authorization-Info" },          RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_3GPP_ID, 0, "IP-CAN-Type" },                         RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_3GPP_ID, 0, "NetLoc-Access-Support" },               RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_3GPP_ID, 0, "RAT-Type" },                            RULE_OPTIONAL,   -1,  1 },
@@ -1425,17 +1643,20 @@ static int dict_rx_entry (char *conffile)
   /*
     <RA-Request> ::= < Diameter Header: 258, REQ, PXY >
       < Session-Id >
+      [ DRMP ]
       { Origin-Host }
       { Origin-Realm }
       { Destination-Realm }
       { Destination-Host }
       { Auth-Application-Id }
-      *{ Specific-Action }
+     *{ Specific-Action }
       [ OC-Supported-Features ]
-      *[ Access-Network-Charging-Identifier ]
+     *[ Access-Network-Charging-Identifier ]
       [ Access-Network-Charging-Address ]
-      *[ Flows ]
-      *[ Subscription-Id ]
+   0*2[ AN-GW-Address ]
+      [ AN-Trusted ]
+     *[ Flows ]
+     *[ Subscription-Id ]
       [ Abort-Cause ]
       [ IP-CAN-Type ]
       [ NetLoc-Access-Support ]
@@ -1444,14 +1665,17 @@ static int dict_rx_entry (char *conffile)
       [ 3GPP-User-Location-Info ]
       [ User-Location-Info-Time ]
       [ 3GPP-MS-TimeZone ]
-      *[ RAN-NAS-Release-Cause ]
+     *[ RAN-NAS-Release-Cause ]
       [ 3GPP-SGSN-MCC-MNC ]
       [ TWAN-Identifier ]
+      [ TCP-Source-Port ]
+      [ UDP-Source-Port ]
+      [ UE-Local-IP-Address ]
       [ Origin-State-Id ]
-      *[ Class ]
-      *[ Proxy-Info ]
-      *[ Route-Record ]
-      *[ AVP ]
+     *[ Class ]
+     *[ Proxy-Info ]
+     *[ Route-Record ]
+     *[ AVP ]
   */
   {
     struct dict_object *cmd;
@@ -1463,6 +1687,7 @@ static int dict_rx_entry (char *conffile)
     };
     struct local_rules_definition cmd_rules[] = {
       { { VENDOR_DIAM_ID, 0, "Session-Id" },                          RULE_FIXED_HEAD,  1,  1 },
+      { { VENDOR_DIAM_ID, 0, "DRMP" },                                RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_DIAM_ID, 0, "Origin-Host" },                         RULE_REQUIRED,    1,  1 },
       { { VENDOR_DIAM_ID, 0, "Origin-Realm" },                        RULE_REQUIRED,    1,  1 },
       { { VENDOR_DIAM_ID, 0, "Destination-Realm" },                   RULE_REQUIRED,    1,  1 },
@@ -1472,6 +1697,8 @@ static int dict_rx_entry (char *conffile)
       { { VENDOR_DIAM_ID, 0, "OC-Supported-Features" },               RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_3GPP_ID, 0, "Access-Network-Charging-Identifier" },  RULE_OPTIONAL,   -1, -1 },
       { { VENDOR_3GPP_ID, 0, "Access-Network-Charging-Address" },     RULE_OPTIONAL,   -1,  1 },
+      { { VENDOR_3GPP_ID, 0, "AN-GW-Address" },                       RULE_OPTIONAL,   -1,  2 },
+      { { VENDOR_3GPP_ID, 0, "AN-Trusted" },                          RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_3GPP_ID, 0, "Flows" },                               RULE_OPTIONAL,   -1, -1 },
       { { VENDOR_DIAM_ID, 0, "Subscription-Id" },                     RULE_OPTIONAL,   -1, -1 },
       { { VENDOR_3GPP_ID, 0, "Abort-Cause" },                         RULE_OPTIONAL,   -1,  1 },
@@ -1485,6 +1712,9 @@ static int dict_rx_entry (char *conffile)
       { { VENDOR_3GPP_ID, 0, "RAN-NAS-Release-Cause" },               RULE_OPTIONAL,   -1, -1 },
       { { VENDOR_3GPP_ID, 0, "3GPP-SGSN-MCC-MNC" },                   RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_3GPP_ID, 0, "TWAN-Identifier" },                     RULE_OPTIONAL,   -1,  1 },
+      { { VENDOR_3GPP_ID, 0, "TCP-Source-Port" },                     RULE_OPTIONAL,   -1,  1 },
+      { { VENDOR_3GPP_ID, 0, "UDP-Source-Port" },                     RULE_OPTIONAL,   -1,  1 },
+      { { VENDOR_3GPP_ID, 0, "UE-Local-IP-Address" },                 RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_DIAM_ID, 0, "Origin-State-Id" },                     RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_DIAM_ID, 0, "Class" },                               RULE_OPTIONAL,   -1, -1 },
       { { VENDOR_DIAM_ID, 0, "Proxy-Info" },                          RULE_OPTIONAL,   -1, -1 },
@@ -1499,24 +1729,25 @@ static int dict_rx_entry (char *conffile)
   /*
     <RA-Answer> ::= < Diameter Header: 258, PXY >
       < Session-Id >
+      [ DRMP ]
       { Origin-Host }
       { Origin-Realm }
       [ Result-Code ]
       [ Experimental-Result ]
       [ OC-Supported-Features ]
       [ OC-OLR ]
-      *[ Media-Component-Description ]
+     *[ Media-Component-Description ]
       [ Service-URN ]
       [ Origin-State-Id ]
-      *[ Class ]
+     *[ Class ]
       [ Error-Message ]
       [ Error-Reporting-Host ]
-      *[ Redirect-Host ]
+     *[ Redirect-Host ]
       [ Redirect-Host-Usage ]
       [ Redirect-Max-Cache-Time ]
-      *[ Failed-AVP ]
-      *[ Proxy-Info ]
-      *[ AVP ]
+     *[ Failed-AVP ]
+     *[ Proxy-Info ]
+     *[ AVP ]
   */
   {
     struct dict_object *cmd;
@@ -1528,6 +1759,7 @@ static int dict_rx_entry (char *conffile)
     };
     struct local_rules_definition cmd_rules[] = {
       { { VENDOR_DIAM_ID, 0, "Session-Id" },                  RULE_FIXED_HEAD,  1,  1 },
+      { { VENDOR_DIAM_ID, 0, "DRMP" },                        RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_DIAM_ID, 0, "Origin-Host" },                 RULE_REQUIRED,    1,  1 },
       { { VENDOR_DIAM_ID, 0, "Origin-Realm" },                RULE_REQUIRED,    1,  1 },
       { { VENDOR_DIAM_ID, 0, "Result-Code" },                 RULE_OPTIONAL,   -1,  1 },
@@ -1555,6 +1787,7 @@ static int dict_rx_entry (char *conffile)
   /*
     <ST-Request> ::= < Diameter Header: 275, REQ, PXY >
       < Session-Id >
+      [ DRMP ]
       { Origin-Host }
       { Origin-Realm }
       { Destination-Realm }
@@ -1562,12 +1795,12 @@ static int dict_rx_entry (char *conffile)
       { Termination-Cause }
       [ Destination-Host ]
       [ OC-Supported-Features ]
-      *[ Required-Access-Info ]
-      *[ Class ]
+     *[ Required-Access-Info ]
+     *[ Class ]
       [ Origin-State-Id ]
-      *[ Proxy-Info ]
-      *[ Route-Record ]
-      *[ AVP ]
+     *[ Proxy-Info ]
+     *[ Route-Record ]
+     *[ AVP ]
   */
   {
     struct dict_object *cmd;
@@ -1579,6 +1812,7 @@ static int dict_rx_entry (char *conffile)
     };
     struct local_rules_definition cmd_rules[] = {
       { { VENDOR_DIAM_ID, 0, "Session-Id" },                          RULE_FIXED_HEAD,  1,  1 },
+      { { VENDOR_DIAM_ID, 0, "DRMP" },                                RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_DIAM_ID, 0, "Origin-Host" },                         RULE_REQUIRED,    1,  1 },
       { { VENDOR_DIAM_ID, 0, "Origin-Realm" },                        RULE_REQUIRED,    1,  1 },
       { { VENDOR_DIAM_ID, 0, "Destination-Realm" },                   RULE_REQUIRED,    1,  1 },
@@ -1601,6 +1835,7 @@ static int dict_rx_entry (char *conffile)
   /*
     <ST-Answer> ::= < Diameter Header: 275, PXY >
       < Session-Id >
+      [ DRMP ]
       { Origin-Host }
       { Origin-Realm }
       [ Result-Code ]
@@ -1617,6 +1852,9 @@ static int dict_rx_entry (char *conffile)
       *[ RAN-NAS-Release-Cause ]
       [ 3GPP-SGSN-MCC-MNC ]
       [ TWAN-Identifier ]
+      [ TCP-Source-Port ]
+      [ UDP-Source-Port ]
+      [ UE-Local-IP-Address ]
       [ NetLoc-Access-Support ]
       *[ Class ]
       *[ Redirect-Host ]
@@ -1635,6 +1873,7 @@ static int dict_rx_entry (char *conffile)
     };
     struct local_rules_definition cmd_rules[] = {
       { { VENDOR_DIAM_ID, 0, "Session-Id" },                  RULE_FIXED_HEAD,  1,  1 },
+      { { VENDOR_DIAM_ID, 0, "DRMP" },                        RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_DIAM_ID, 0, "Origin-Host" },                 RULE_REQUIRED,    1,  1 },
       { { VENDOR_DIAM_ID, 0, "Origin-Realm" },                RULE_REQUIRED,    1,  1 },
       { { VENDOR_DIAM_ID, 0, "Result-Code" },                 RULE_OPTIONAL,   -1,  1 },
@@ -1651,6 +1890,9 @@ static int dict_rx_entry (char *conffile)
       { { VENDOR_3GPP_ID, 0, "RAN-NAS-Release-Cause" },       RULE_OPTIONAL,   -1, -1 },
       { { VENDOR_3GPP_ID, 0, "3GPP-SGSN-MCC-MNC" },           RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_3GPP_ID, 0, "TWAN-Identifier" },             RULE_OPTIONAL,   -1,  1 },
+      { { VENDOR_3GPP_ID, 0, "TCP-Source-Port" },             RULE_OPTIONAL,   -1,  1 },
+      { { VENDOR_3GPP_ID, 0, "UDP-Source-Port" },             RULE_OPTIONAL,   -1,  1 },
+      { { VENDOR_3GPP_ID, 0, "UE-Local-IP-Address" },         RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_3GPP_ID, 0, "NetLoc-Access-Support" },       RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_DIAM_ID, 0, "Class" },                       RULE_OPTIONAL,   -1, -1 },
       { { VENDOR_DIAM_ID, 0, "Redirect-Host" },               RULE_OPTIONAL,   -1, -1 },
@@ -1667,6 +1909,7 @@ static int dict_rx_entry (char *conffile)
   /*
     <AS-Request> ::= < Diameter Header: 274, REQ, PXY >
       < Session-Id >
+      [ DRMP ]
       { Origin-Host }
       { Origin-Realm }
       { Destination-Realm }
@@ -1689,6 +1932,7 @@ static int dict_rx_entry (char *conffile)
     };
     struct local_rules_definition cmd_rules[] = {
       { { VENDOR_DIAM_ID, 0, "Session-Id" },            RULE_FIXED_HEAD,  1,  1 },
+      { { VENDOR_DIAM_ID, 0, "DRMP" },                  RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_DIAM_ID, 0, "Origin-Host" },           RULE_REQUIRED,    1,  1 },
       { { VENDOR_DIAM_ID, 0, "Origin-Realm" },          RULE_REQUIRED,    1,  1 },
       { { VENDOR_DIAM_ID, 0, "Destination-Realm" },     RULE_REQUIRED,    1,  1 },
@@ -1709,6 +1953,7 @@ static int dict_rx_entry (char *conffile)
   /*
     <AS-Answer> ::= < Diameter Header: 274, PXY >
       < Session-Id >
+      [ DRMP ]
       { Origin-Host }
       { Origin-Realm }
       [ Result-Code ]
@@ -1734,6 +1979,7 @@ static int dict_rx_entry (char *conffile)
     };
     struct local_rules_definition cmd_rules[] = {
       { { VENDOR_DIAM_ID, 0, "Session-Id" },              RULE_FIXED_HEAD,  1,  1 },
+      { { VENDOR_DIAM_ID, 0, "DRMP" },                    RULE_OPTIONAL,   -1,  1 },
       { { VENDOR_DIAM_ID, 0, "Origin-Host" },             RULE_REQUIRED,    1,  1 },
       { { VENDOR_DIAM_ID, 0, "Origin-Realm" },            RULE_REQUIRED,    1,  1 },
       { { VENDOR_DIAM_ID, 0, "Result-Code" },             RULE_OPTIONAL,   -1,  1 },
