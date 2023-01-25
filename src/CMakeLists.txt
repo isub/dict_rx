@@ -1,15 +1,16 @@
-# The app_pcrf extension
+# The dict_rx extension
 PROJECT("Rx Dictionary" C)
 
-SET(CMAKE_BUILD_TYPE MaxPerformance)
+#SET(CMAKE_BUILD_TYPE DebugValgrind)
+SET(CMAKE_CXX_FLAGS "--std=c++0x -g -Wall -Wextra")
 
 # List of source files
-SET( PCRF_APP_SRC dict_rx.c )
+SET( RX_DICT_SRC
+	dict_rx.c
+)
 
 # Compile as a module
-FD_ADD_EXTENSION(dict_rx ${PCRF_APP_SRC})
-
-#TARGET_LINK_LIBRARIES(app_rx "-L/oracle/orahome/lib -lmudflapth")
+FD_ADD_EXTENSION(dict_rx ${RX_DICT_SRC})
 
 ####
 ## INSTALL section ##

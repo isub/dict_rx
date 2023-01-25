@@ -1,14 +1,14 @@
 #ifndef _APP_RX_DICT_H_
 #define _APP_RX_DICT_H_
 
-#define VENDOR_DIAM_ID  0
-#define VENDOR_3GPP_ID  10415
-#define APP_RX_ID       16777236
+#define VEND_ID_DIAM  0
+#define VEND_ID_3GPP  10415
+#define APP_ID_RX       16777236
 
-#define AAR_CMD_ID      265
-#define STR_CMD_ID      275
-#define RAR_CMD_ID      258
-#define ASR_CMD_ID      274
+#define CMD_ID_AAR      265
+#define CMD_ID_STR      275
+#define CMD_ID_RAR      258
+#define CMD_ID_ASR      274
 
 #define END_USER_E164     0
 #define END_USER_IMSI     1
@@ -34,5 +34,50 @@
 #define AC_PS_TO_CS_HANDOVER                      3
 #define AC_SPONSORED_DATA_CONNECTIVITY_DISALLOWED 4
 /* Abort-Cause */
+
+/* Specific-Action */
+#define SA_Void0                                               0
+#define SA_CHARGING_CORRELATION_EXCHANGE                       1
+#define SA_INDICATION_OF_LOSS_OF_BEARER                        2
+#define SA_INDICATION_OF_RECOVERY_OF_BEARER                    3
+#define SA_INDICATION_OF_RELEASE_OF_BEARER                     4
+#define SA_Void5                                               5
+#define SA_IP_CAN_CHANGE                                       6
+#define SA_INDICATION_OF_OUT_OF_CREDIT                         7
+#define SA_INDICATION_OF_SUCCESSFUL_RESOURCES_ALLOCATION       8
+#define SA_INDICATION_OF_FAILED_RESOURCES_ALLOCATION           9
+#define SA_INDICATION_OF_LIMITED_PCC_DEPLOYMENT               10
+#define SA_USAGE_REPORT                                       11
+#define SA_ACCESS_NETWORK_INFO_REPORT                         12
+#define SA_INDICATION_OF_RECOVERY_FROM_LIMITED_PCC_DEPLOYMENT 13
+/* Specific-Action */
+
+/* Rule-Failure-Code */
+#define RFC_UNKNOWN_RULE_NAME            1
+#define RFC_RATING_GROUP_ERROR           2
+#define RFC_SERVICE_IDENTIFIER_ERROR     3
+#define RFC_GW_PCEF_MALFUNCTION          4
+#define RFC_RESOURCES_LIMITATION         5
+#define RFC_MAX_NR_BEARERS_REACHED       6
+#define RFC_UNKNOWN_BEARER_ID            7
+#define RFC_MISSING_BEARER_ID            8
+#define RFC_MISSING_FLOW_INFORMATION     9
+#define RFC_RESOURCE_ALLOCATION_FAILURE 10
+#define RFC_UNSUCCESSFUL_QOS_VALIDATION 11
+#define RFC_INCORRECT_FLOW_INFORMATION  12
+#define RFC_PS_TO_CS_HANDOVER           13
+#define RFC_NO_BEARER_BOUND             15
+/* Rule-Failure-Code */
+
+/* Media-Type */
+#define MT_AUDIO       0
+#define MT_VIDEO       1
+#define MT_DATA        2
+#define MT_APPLICATION 3
+#define MT_CONTROL     4
+#define MT_TEXT        5
+#define MT_MESSAGE     6
+#define MT_OTHER       static_cast<int>(0xFFFFFFFF)
+/* Media-Type */
 
 #endif /* _APP_RX_DICT_H_ */

@@ -137,9 +137,9 @@ static int dict_rx_entry (char *conffile)
 
   /* application section *****************************************************/
   {
-    struct dict_vendor_data vendor_data = { VENDOR_3GPP_ID, "3GPP" };
+    struct dict_vendor_data vendor_data = { VEND_ID_3GPP, "3GPP" };
     struct dict_object *psoVendorDict;
-    struct dict_application_data appl_data = { APP_RX_ID, "Rx application" };
+    struct dict_application_data appl_data = { APP_ID_RX, "Rx application" };
 
     CHECK_DICT_NEW( DICT_VENDOR, &vendor_data, NULL, &psoVendorDict );
     CHECK_DICT_NEW( DICT_APPLICATION, &appl_data, psoVendorDict, &psoRxApp );
@@ -157,20 +157,20 @@ static int dict_rx_entry (char *conffile)
   CHECK_DICT_SEARCH( DICT_TYPE, TYPE_BY_NAME, "Time", &Time_type );
 
   /* Abort-Cause | 500 | 5.3.1 | Enumerated | M,V | P | | | Y */
-  {
+  if ( 0 ) {
     size_t ind;
-    struct dict_type_data     data_type = { .type_base = AVP_TYPE_INTEGER32, .type_name = "Enumerated*(Abort-Cause)" };
+    struct dict_type_data     data_type = { .type_base = AVP_TYPE_INTEGER32,.type_name = "Enumerated*(Abort-Cause)" };
     struct dict_object        *enum_type;
-    struct dict_enumval_data  data_enum[] = {
-      { "BEARER_RELEASED",                         { .i32 = AC_BEARER_RELEASED                        } },
-      { "INSUFFICIENT_SERVER_RESOURCES",           { .i32 = AC_INSUFFICIENT_SERVER_RESOURCES          } },
-      { "INSUFFICIENT_BEARER_RESOURCES",           { .i32 = AC_INSUFFICIENT_BEARER_RESOURCES          } },
-      { "PS_TO_CS_HANDOVER",                       { .i32 = AC_PS_TO_CS_HANDOVER                      } },
-      { "SPONSORED_DATA_CONNECTIVITY_ DISALLOWED", { .i32 = AC_SPONSORED_DATA_CONNECTIVITY_DISALLOWED } }
+    struct dict_enumval_data  data_enum[ ] = {
+      { "BEARER_RELEASED",                         {.i32 = AC_BEARER_RELEASED                        } },
+      { "INSUFFICIENT_SERVER_RESOURCES",           {.i32 = AC_INSUFFICIENT_SERVER_RESOURCES          } },
+      { "INSUFFICIENT_BEARER_RESOURCES",           {.i32 = AC_INSUFFICIENT_BEARER_RESOURCES          } },
+      { "PS_TO_CS_HANDOVER",                       {.i32 = AC_PS_TO_CS_HANDOVER                      } },
+      { "SPONSORED_DATA_CONNECTIVITY_ DISALLOWED", {.i32 = AC_SPONSORED_DATA_CONNECTIVITY_DISALLOWED } }
     };
     struct dict_avp_data      data_avp = {
       500,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Abort-Cause",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -179,8 +179,8 @@ static int dict_rx_entry (char *conffile)
     /* create enumerated type */
     CHECK_DICT_NEW( DICT_TYPE, &data_type, NULL, &enum_type );
     /* create enumerated values */
-    for (ind = 0; ind < sizeof(data_enum)/sizeof(*data_enum); ++ind) {
-      CHECK_DICT_NEW( DICT_ENUMVAL, &data_enum[ind], enum_type, NULL );
+    for ( ind = 0; ind < sizeof( data_enum ) / sizeof( *data_enum ); ++ind ) {
+      CHECK_DICT_NEW( DICT_ENUMVAL, &data_enum[ ind ], enum_type, NULL );
     }
     /* create avp */
     CHECK_DICT_NEW( DICT_AVP, &data_avp, enum_type, NULL );
@@ -190,7 +190,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       501,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Access-Network-Charging-Address",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -204,7 +204,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       502,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Access-Network-Charging-Identifier",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -218,7 +218,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       503,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Access-Network-Charging-Identifier-Value",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -232,7 +232,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       526,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Acceptable-Service-Info",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -246,7 +246,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       504,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "AF-Application-Identifier",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -260,7 +260,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       505,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "AF-Charging-Identifier",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -274,7 +274,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       532,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Application-Service-Provider-Identity",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR,
@@ -288,7 +288,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       524,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Codec-Data",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -302,7 +302,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       507,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Flow-Description",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -316,7 +316,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       509,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Flow-Number",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -330,7 +330,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       510,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Flows",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -341,20 +341,20 @@ static int dict_rx_entry (char *conffile)
   }
 
   /* Flow-Status | 511 | 5.3.11 | Enumerated | M,V | P | | | Y */
-  {
+  if ( 0 ) {
     size_t ind;
-    struct dict_type_data     data_type = { .type_base = AVP_TYPE_INTEGER32, .type_name = "Enumerated*(Flow-Status)" };
+    struct dict_type_data     data_type = { .type_base = AVP_TYPE_INTEGER32,.type_name = "Enumerated*(Flow-Status)" };
     struct dict_object        *enum_type;
-    struct dict_enumval_data  data_enum[] = {
-      { "ENABLED-UPLINK",   { .i32 = 0 } },
-      { "ENABLED-DOWNLINK", { .i32 = 1 } },
-      { "ENABLED",          { .i32 = 2 } },
-      { "DISABLED",         { .i32 = 3 } },
-      { "REMOVED",          { .i32 = 4 } }
+    struct dict_enumval_data  data_enum[ ] = {
+      { "ENABLED-UPLINK",   {.i32 = 0 } },
+      { "ENABLED-DOWNLINK", {.i32 = 1 } },
+      { "ENABLED",          {.i32 = 2 } },
+      { "DISABLED",         {.i32 = 3 } },
+      { "REMOVED",          {.i32 = 4 } }
     };
     struct dict_avp_data      data_avp = {
       511,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Flow-Status",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -363,26 +363,26 @@ static int dict_rx_entry (char *conffile)
     /* create enumerated type */
     CHECK_DICT_NEW( DICT_TYPE, &data_type, NULL, &enum_type );
     /* create enumerated values */
-    for (ind = 0; ind < sizeof(data_enum)/sizeof(*data_enum); ++ind) {
-      CHECK_DICT_NEW( DICT_ENUMVAL, &data_enum[ind], enum_type, NULL );
+    for ( ind = 0; ind < sizeof( data_enum ) / sizeof( *data_enum ); ++ind ) {
+      CHECK_DICT_NEW( DICT_ENUMVAL, &data_enum[ ind ], enum_type, NULL );
     }
     /* create avp */
     CHECK_DICT_NEW( DICT_AVP, &data_avp, enum_type, NULL );
   }
 
   /* Flow-Usage | 512 | 5.3.12 | Enumerated | M,V | P | | | Y */
-  {
+  if ( 0 ) {
     size_t ind;
-    struct dict_type_data     data_type = { .type_base = AVP_TYPE_INTEGER32, .type_name = "Enumerated*(Flow-Usage)" };
+    struct dict_type_data     data_type = { .type_base = AVP_TYPE_INTEGER32,.type_name = "Enumerated*(Flow-Usage)" };
     struct dict_object        *enum_type;
-    struct dict_enumval_data  data_enum[] = {
-      { "NO_INFORMATION", { .i32 = 0 } },
-      { "RTCP",           { .i32 = 1 } },
-      { "AF_SIGNALLING",  { .i32 = 2 } }
+    struct dict_enumval_data  data_enum[ ] = {
+      { "NO_INFORMATION", {.i32 = 0 } },
+      { "RTCP",           {.i32 = 1 } },
+      { "AF_SIGNALLING",  {.i32 = 2 } }
     };
     struct dict_avp_data      data_avp = {
       512,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Flow-Usage",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -391,8 +391,8 @@ static int dict_rx_entry (char *conffile)
     /* create enumerated type */
     CHECK_DICT_NEW( DICT_TYPE, &data_type, NULL, &enum_type );
     /* create enumerated values */
-    for (ind = 0; ind < sizeof(data_enum)/sizeof(*data_enum); ++ind) {
-      CHECK_DICT_NEW( DICT_ENUMVAL, &data_enum[ind], enum_type, NULL );
+    for ( ind = 0; ind < sizeof( data_enum ) / sizeof( *data_enum ); ++ind ) {
+      CHECK_DICT_NEW( DICT_ENUMVAL, &data_enum[ ind ], enum_type, NULL );
     }
     /* create avp */
     CHECK_DICT_NEW( DICT_AVP, &data_avp, enum_type, NULL );
@@ -402,7 +402,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       538,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "GCS-Identifier",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR,
@@ -416,7 +416,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       525,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Service-URN",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -427,31 +427,31 @@ static int dict_rx_entry (char *conffile)
   }
 
   /* Specific-Action | 513 | 5.3.13 | Enumerated | M,V | P | | | Y */
-  {
+  if ( 0 ) {
     size_t ind;
-    struct dict_type_data     data_type = { .type_base = AVP_TYPE_INTEGER32, .type_name = "Enumerated*(Specific-Action)" };
+    struct dict_type_data     data_type = { .type_base = AVP_TYPE_INTEGER32,.type_name = "Enumerated*(Specific-Action)" };
     struct dict_object        *enum_type;
-    struct dict_enumval_data  data_enum[] = {
-/*    { "Void",                                                { .i32 = 0 } }, */
-      { "CHARGING_CORRELATION_EXCHANGE",                       { .i32 = 1 } },
-      { "INDICATION_OF_LOSS_OF_BEARER",                        { .i32 = 2 } },
-      { "INDICATION_OF_RECOVERY_OF_BEARER",                    { .i32 = 3 } },
-      { "INDICATION_OF_RELEASE_OF_BEARER",                     { .i32 = 4 } },
-/*    { "Void",                                                { .i32 = 5 } }, */
-      { "IP-CAN_CHANGE",                                       { .i32 = 6 } },
-      { "INDICATION_OF_OUT_OF_CREDIT",                         { .i32 = 7 } },
-      { "INDICATION_OF_SUCCESSFUL_RESOURCES_ALLOCATION",       { .i32 = 8 } },
-      { "INDICATION_OF_FAILED_RESOURCES_ALLOCATION",           { .i32 = 9 } },
-      { "INDICATION_OF_LIMITED_PCC_DEPLOYMENT",                { .i32 = 10 } },
-      { "USAGE_REPORT",                                        { .i32 = 11 } },
-      { "ACCESS_NETWORK_INFO_REPORT",                          { .i32 = 12 } },
-      { "INDICATION_OF_RECOVERY_FROM_LIMITED_PCC_DEPLOYMENT",  { .i32 = 13 } },
-      { "INDICATION_OF_ACCESS_NETWORK_INFO_REPORTING_FAILURE", { .i32 = 14 } },
-      { "INDICATION_OF_TRANSFER_POLICY_EXPIRED",               { .i32 = 15 } }
+    struct dict_enumval_data  data_enum[ ] = {
+            { "Void_0",                                              { .i32 =  0 } },
+            { "CHARGING_CORRELATION_EXCHANGE",                       { .i32 =  1 } },
+            { "INDICATION_OF_LOSS_OF_BEARER",                        { .i32 =  2 } },
+            { "INDICATION_OF_RECOVERY_OF_BEARER",                    { .i32 =  3 } },
+            { "INDICATION_OF_RELEASE_OF_BEARER",                     { .i32 =  4 } },
+            { "Void_5",                                              { .i32 =  5 } },
+            { "IP-CAN_CHANGE",                                       { .i32 =  6 } },
+            { "INDICATION_OF_OUT_OF_CREDIT",                         { .i32 =  7 } },
+            { "INDICATION_OF_SUCCESSFUL_RESOURCES_ALLOCATION",       { .i32 =  8 } },
+            { "INDICATION_OF_FAILED_RESOURCES_ALLOCATION",           { .i32 =  9 } },
+            { "INDICATION_OF_LIMITED_PCC_DEPLOYMENT",                { .i32 = 10 } },
+            { "USAGE_REPORT",                                        { .i32 = 11 } },
+            { "ACCESS_NETWORK_INFO_REPORT",                          { .i32 = 12 } },
+            { "INDICATION_OF_RECOVERY_FROM_LIMITED_PCC_DEPLOYMENT",  { .i32 = 13 } },
+            { "INDICATION_OF_ACCESS_NETWORK_INFO_REPORTING_FAILURE", { .i32 = 14 } },
+            { "INDICATION_OF_TRANSFER_POLICY_EXPIRED",               { .i32 = 15 } }
     };
     struct dict_avp_data      data_avp = {
       513,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Specific-Action",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -460,8 +460,8 @@ static int dict_rx_entry (char *conffile)
     /* create enumerated type */
     CHECK_DICT_NEW( DICT_TYPE, &data_type, NULL, &enum_type );
     /* create enumerated values */
-    for (ind = 0; ind < sizeof(data_enum)/sizeof(*data_enum); ++ind) {
-      CHECK_DICT_NEW( DICT_ENUMVAL, &data_enum[ind], enum_type, NULL );
+    for ( ind = 0; ind < sizeof( data_enum ) / sizeof( *data_enum ); ++ind ) {
+      CHECK_DICT_NEW( DICT_ENUMVAL, &data_enum[ ind ], enum_type, NULL );
     }
     /* create avp */
     CHECK_DICT_NEW( DICT_AVP, &data_avp, enum_type, NULL );
@@ -471,7 +471,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       515,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Max-Requested-Bandwidth-DL",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -485,7 +485,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       516,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Max-Requested-Bandwidth-UL",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -499,7 +499,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       517,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Media-Component-Description",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -513,7 +513,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       518,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Media-Component-Number",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -527,7 +527,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       519,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Media-Sub-Component",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -538,23 +538,23 @@ static int dict_rx_entry (char *conffile)
   }
 
   /* Media-Type | 520 | 5.3.19 | Enumerated | M,V | P | | | Y */
-  {
+  if ( 0 ) {
     size_t ind;
     struct dict_type_data     data_type = { .type_base = AVP_TYPE_INTEGER32, .type_name = "Enumerated*(Media-Type)" };
     struct dict_object        *enum_type;
     struct dict_enumval_data  data_enum[] = {
-      { "AUDIO",        { .i32 = 0 } },
-      { "VIDEO",        { .i32 = 1 } },
-      { "DATA",         { .i32 = 2 } },
-      { "APPLICATION",  { .i32 = 3 } },
-      { "CONTROL",      { .i32 = 4 } },
-      { "TEXT",         { .i32 = 5 } },
-      { "MESSAGE",      { .i32 = 6 } },
-      { "OTHER",        { .i32 = 0xFFFFFFFF } }
+      { "AUDIO",        { .u32 = 0 } },
+      { "VIDEO",        { .u32 = 1 } },
+      { "DATA",         { .u32 = 2 } },
+      { "APPLICATION",  { .u32 = 3 } },
+      { "CONTROL",      { .u32 = 4 } },
+      { "TEXT",         { .u32 = 5 } },
+      { "MESSAGE",      { .u32 = 6 } },
+      { "OTHER",        { .u32 = 0xFFFFFFFF } }
     };
     struct dict_avp_data      data_avp = {
       520,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Media-Type",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -574,7 +574,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       528,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "MPS-Identifier",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR,
@@ -588,7 +588,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       534,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Min-Requested-Bandwidth-DL",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR,
@@ -602,7 +602,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       535,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Min-Requested-Bandwidth-UL",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR,
@@ -616,7 +616,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       521,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "RR-Bandwidth",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -630,7 +630,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       522,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "RS-Bandwidth",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -651,7 +651,7 @@ static int dict_rx_entry (char *conffile)
     };
     struct dict_avp_data      data_avp = {
       527,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Service-Info-Status",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -678,7 +678,7 @@ static int dict_rx_entry (char *conffile)
     };
     struct dict_avp_data      data_avp = {
       523,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "SIP-Forking-Indication",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -698,7 +698,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       531,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Sponsor-Identity",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR,
@@ -712,7 +712,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       530,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Sponsored-Connectivity-Data",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR,
@@ -733,7 +733,7 @@ static int dict_rx_entry (char *conffile)
     };
     struct dict_avp_data      data_avp = {
       529,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "AF-Signalling-Protocol",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR,
@@ -760,7 +760,7 @@ static int dict_rx_entry (char *conffile)
     };
     struct dict_avp_data      data_avp = {
       536,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Required-Access-Info",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR,
@@ -788,7 +788,7 @@ static int dict_rx_entry (char *conffile)
     };
     struct dict_avp_data      data_avp = {
       533,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Rx-Request-Type",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR,
@@ -808,7 +808,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       537,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "IP-Domain-Id",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR,
@@ -819,7 +819,7 @@ static int dict_rx_entry (char *conffile)
   }
 
   /* Priority-Sharing-Indicator | 550 | 5.3.47 | Enumerated | M,V | P | | | Y */
-  {
+  if( 0 ) {
     size_t ind;
     struct dict_type_data     data_type = { .type_base = AVP_TYPE_INTEGER32, .type_name = "Enumerated*(Priority-Sharing-Indicator)" };
     struct dict_object        *enum_type;
@@ -828,9 +828,9 @@ static int dict_rx_entry (char *conffile)
       { "PRIORITY_SHARING_DISABLED", { .i32 = 1 } }
     };
     struct dict_avp_data      data_avp = {
-      511,
-      VENDOR_3GPP_ID,
-      "Flow-Status",
+      550,
+      VEND_ID_3GPP,
+      "Priority-Sharing-Indicator",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_TYPE_INTEGER32
@@ -849,7 +849,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       547,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "MCPTT-Identifier",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR,
@@ -860,10 +860,10 @@ static int dict_rx_entry (char *conffile)
   }
 
   /* Reference-Id | 4202 | 3GPP TS 29.154[5.3.3] | OctetString | M,V | P | | */
-  {
+  if( 0 ) {
     struct dict_avp_data      data_avp = {
       4202,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Reference-Id",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR,
@@ -898,7 +898,7 @@ static int dict_rx_entry (char *conffile)
     };
     struct dict_avp_data      data_avp = {
       301,
-      VENDOR_DIAM_ID,
+      VEND_ID_DIAM,
       "DRMP",
       AVP_FLAG_MANDATORY,
       0,
@@ -918,7 +918,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       1050,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "AN-GW-Address",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR,
@@ -939,7 +939,7 @@ static int dict_rx_entry (char *conffile)
     };
     struct dict_avp_data      data_avp = {
       1503,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "AN-Trusted",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -959,7 +959,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       548,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Service-Authorization-Info",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR,
@@ -973,7 +973,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       541,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Retry-Interval",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR,
@@ -987,7 +987,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       2843,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "TCP-Source-Port",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR,
@@ -1001,7 +1001,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       2806,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "UDP-Source-Port",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR,
@@ -1015,7 +1015,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       2805,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "UE-Local-IP-Address",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR,
@@ -1038,7 +1038,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       624,
-      VENDOR_DIAM_ID,
+      VEND_ID_DIAM,
       "OC-Sequence-Number",
       AVP_FLAG_VENDOR,
       0,
@@ -1058,7 +1058,7 @@ static int dict_rx_entry (char *conffile)
     };
     struct dict_avp_data      data_avp = {
       626,
-      VENDOR_DIAM_ID,
+      VEND_ID_DIAM,
       "OC-Report-Type",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR,
@@ -1077,7 +1077,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       627,
-      VENDOR_DIAM_ID,
+      VEND_ID_DIAM,
       "OC-Reduction-Percentage",
       AVP_FLAG_VENDOR,
       0,
@@ -1090,7 +1090,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       625,
-      VENDOR_DIAM_ID,
+      VEND_ID_DIAM,
       "OC-Validity-Duration",
       AVP_FLAG_VENDOR,
       0,
@@ -1104,17 +1104,17 @@ static int dict_rx_entry (char *conffile)
     struct dict_object *group_avp;
     struct dict_avp_data      data_avp = {
       623,
-      VENDOR_DIAM_ID,
+      VEND_ID_DIAM,
       "OC-OLR",
       AVP_FLAG_VENDOR,
       0,
       AVP_TYPE_GROUPED
     };
     struct local_rules_definition avp_rules[] = {
-      { { VENDOR_DIAM_ID, 0, "OC-Sequence-Number" }, RULE_REQUIRED,  1,  1 },
-      { { VENDOR_DIAM_ID, 0, "OC-Report-Type" },  RULE_REQUIRED,  1,  1 },
-      { { VENDOR_DIAM_ID, 0, "OC-Reduction-Percentage" },  RULE_OPTIONAL, -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "OC-Validity-Duration" },  RULE_OPTIONAL, -1,  1 }
+      { { VEND_ID_DIAM, 0, "OC-Sequence-Number" }, RULE_REQUIRED,  1,  1 },
+      { { VEND_ID_DIAM, 0, "OC-Report-Type" },  RULE_REQUIRED,  1,  1 },
+      { { VEND_ID_DIAM, 0, "OC-Reduction-Percentage" },  RULE_OPTIONAL, -1,  1 },
+      { { VEND_ID_DIAM, 0, "OC-Validity-Duration" },  RULE_OPTIONAL, -1,  1 }
     };
 
     /* create avp */
@@ -1130,7 +1130,7 @@ static int dict_rx_entry (char *conffile)
   {
     struct dict_avp_data      data_avp = {
       622,
-      VENDOR_DIAM_ID,
+      VEND_ID_DIAM,
       "OC-Feature-Vector",
       AVP_FLAG_VENDOR,
       0,
@@ -1144,14 +1144,14 @@ static int dict_rx_entry (char *conffile)
     struct dict_object *group_avp;
     struct dict_avp_data      data_avp = {
       621,
-      VENDOR_DIAM_ID,
+      VEND_ID_DIAM,
       "OC-Supported-Features",
       AVP_FLAG_VENDOR,
       0,
       AVP_TYPE_GROUPED
     };
     struct local_rules_definition avp_rules[] = {
-      { { VENDOR_DIAM_ID, 0, "OC-Feature-Vector" }, RULE_OPTIONAL,  -1,  1 }
+      { { VEND_ID_DIAM, 0, "OC-Feature-Vector" }, RULE_OPTIONAL,  -1,  1 }
     };
 
     /* create avp */
@@ -1184,7 +1184,7 @@ static int dict_rx_entry (char *conffile)
     };
     struct dict_avp_data      data_avp = {
       458,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "Reservation-Priority",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR,
@@ -1226,7 +1226,7 @@ static int dict_rx_entry (char *conffile)
   }
 
   /* NetLoc-Access-Support | 2824 | ETSI TS 129 212 V12.13.0 (2016-08)[5.3.11] | Enumerated | V | M | | | Y */
-  {
+  if( 0 ) {
     size_t ind;
     struct dict_type_data     data_type = { .type_base = AVP_TYPE_INTEGER32,.type_name = "Enumerated*(NetLoc-Access-Support)" };
     struct dict_object        *enum_type;
@@ -1235,7 +1235,7 @@ static int dict_rx_entry (char *conffile)
     };
     struct dict_avp_data      data_avp = {
       2824,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "NetLoc-Access-Support",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR,
@@ -1271,7 +1271,7 @@ static int dict_rx_entry (char *conffile)
     };
     struct dict_avp_data      data_avp = {
       1032,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "RAT-Type",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR,
@@ -1288,10 +1288,10 @@ static int dict_rx_entry (char *conffile)
   }
 
   /* User-Location-Info-Time | 2812 | ETSI TS 129 212 V12.13.0 (2016-08)[5.3.101] | Time | V | M | | | Y */
-  {
+  if( 0 ) {
     struct dict_avp_data      data_avp = {
       2812,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "User-Location-Info-Time",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -1302,10 +1302,10 @@ static int dict_rx_entry (char *conffile)
   }
 
   /* RAN-NAS-Release-Cause | 2819 | ETSI TS 129 212 V12.13.0 (2016-08)[5.3.106] | Time | V | M | | | Y */
-  {
+  if( 0 ) {
     struct dict_avp_data      data_avp = {
       2819,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "RAN-NAS-Release-Cause",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -1316,10 +1316,10 @@ static int dict_rx_entry (char *conffile)
   }
 
   /* TWAN-Identifier | 29 | ETSI TS 129 061 | OctetString | V | M | | | Y */
-  {
+  if( 0 ) {
     struct dict_avp_data      data_avp = {
       29,
-      VENDOR_3GPP_ID,
+      VEND_ID_3GPP,
       "TWAN-Identifier",
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
       AVP_FLAG_VENDOR | AVP_FLAG_MANDATORY,
@@ -1337,10 +1337,10 @@ static int dict_rx_entry (char *conffile)
   */
   {
     struct dict_object *group_avp;
-    struct dict_avp_request avp_req = { VENDOR_3GPP_ID, 0, "Access-Network-Charging-Identifier" };
+    struct dict_avp_request avp_req = { VEND_ID_3GPP, 0, "Access-Network-Charging-Identifier" };
     struct local_rules_definition avp_rules[] = {
-      { { VENDOR_3GPP_ID, 0, "Access-Network-Charging-Identifier-Value" },  RULE_REQUIRED,  1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Flows" },                                     RULE_OPTIONAL, -1, -1 }
+      { { VEND_ID_3GPP, 0, "Access-Network-Charging-Identifier-Value" },  RULE_REQUIRED,  1,  1 },
+      { { VEND_ID_3GPP, 0, "Flows" },                                     RULE_OPTIONAL, -1, -1 }
     };
 
     CHECK_DICT_SEARCH( DICT_AVP, AVP_BY_NAME_AND_VENDOR, &avp_req, &group_avp );
@@ -1356,11 +1356,11 @@ static int dict_rx_entry (char *conffile)
   */
   {
     struct dict_object *group_avp;
-    struct dict_avp_request avp_req = { VENDOR_3GPP_ID, 0, "Acceptable-Service-Info" };
+    struct dict_avp_request avp_req = { VEND_ID_3GPP, 0, "Acceptable-Service-Info" };
     struct local_rules_definition avp_rules[] = {
-      { { VENDOR_3GPP_ID, 0, "Media-Component-Description" }, RULE_OPTIONAL, -1, -1 },
-      { { VENDOR_3GPP_ID, 0, "Max-Requested-Bandwidth-DL" },  RULE_OPTIONAL, -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Max-Requested-Bandwidth-UL" },  RULE_OPTIONAL, -1,  1 }
+      { { VEND_ID_3GPP, 0, "Media-Component-Description" }, RULE_OPTIONAL, -1, -1 },
+      { { VEND_ID_3GPP, 0, "Max-Requested-Bandwidth-DL" },  RULE_OPTIONAL, -1,  1 },
+      { { VEND_ID_3GPP, 0, "Max-Requested-Bandwidth-UL" },  RULE_OPTIONAL, -1,  1 }
     };
 
     CHECK_DICT_SEARCH( DICT_AVP, AVP_BY_NAME_AND_VENDOR, &avp_req, &group_avp );
@@ -1375,11 +1375,11 @@ static int dict_rx_entry (char *conffile)
   */
   {
     struct dict_object *group_avp;
-    struct dict_avp_request avp_req = { VENDOR_3GPP_ID, 0, "Flows" };
+    struct dict_avp_request avp_req = { VEND_ID_3GPP, 0, "Flows" };
     struct local_rules_definition avp_rules[] = {
-      { { VENDOR_3GPP_ID, 0, "Media-Component-Number" },  RULE_REQUIRED,  1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Flow-Number" },             RULE_OPTIONAL, -1, -1 },
-      { { VENDOR_DIAM_ID, 0, "Final-Unit-Action" },       RULE_OPTIONAL, -1,  1 }
+      { { VEND_ID_3GPP, 0, "Media-Component-Number" },  RULE_REQUIRED,  1,  1 },
+      { { VEND_ID_3GPP, 0, "Flow-Number" },             RULE_OPTIONAL, -1, -1 },
+      { { VEND_ID_DIAM, 0, "Final-Unit-Action" },       RULE_OPTIONAL, -1,  1 }
     };
 
     CHECK_DICT_SEARCH( DICT_AVP, AVP_BY_NAME_AND_VENDOR, &avp_req, &group_avp );
@@ -1404,21 +1404,21 @@ static int dict_rx_entry (char *conffile)
   */
   {
     struct dict_object *group_avp;
-    struct dict_avp_request avp_req = { VENDOR_3GPP_ID, 0, "Media-Component-Description" };
+    struct dict_avp_request avp_req = { VEND_ID_3GPP, 0, "Media-Component-Description" };
     struct local_rules_definition avp_rules[] = {
-      { { VENDOR_3GPP_ID, 0, "Media-Component-Number" },      RULE_REQUIRED,  1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Media-Sub-Component" },         RULE_OPTIONAL, -1, -1 },
-      { { VENDOR_3GPP_ID, 0, "AF-Application-Identifier" },   RULE_OPTIONAL, -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Media-Type" },                  RULE_OPTIONAL, -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Max-Requested-Bandwidth-UL" },  RULE_OPTIONAL, -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Max-Requested-Bandwidth-DL" },  RULE_OPTIONAL, -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Min-Requested-Bandwidth-UL" },  RULE_OPTIONAL, -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Min-Requested-Bandwidth-DL" },  RULE_OPTIONAL, -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Flow-Status" },                 RULE_OPTIONAL, -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Reservation-Priority" },        RULE_OPTIONAL, -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "RS-Bandwidth" },                RULE_OPTIONAL, -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "RR-Bandwidth" },                RULE_OPTIONAL, -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Codec-Data" },                  RULE_OPTIONAL, -1, -1 }
+      { { VEND_ID_3GPP, 0, "Media-Component-Number" },      RULE_REQUIRED,  1,  1 },
+      { { VEND_ID_3GPP, 0, "Media-Sub-Component" },         RULE_OPTIONAL, -1, -1 },
+      { { VEND_ID_3GPP, 0, "AF-Application-Identifier" },   RULE_OPTIONAL, -1,  1 },
+      { { VEND_ID_3GPP, 0, "Media-Type" },                  RULE_OPTIONAL, -1,  1 },
+      { { VEND_ID_3GPP, 0, "Max-Requested-Bandwidth-UL" },  RULE_OPTIONAL, -1,  1 },
+      { { VEND_ID_3GPP, 0, "Max-Requested-Bandwidth-DL" },  RULE_OPTIONAL, -1,  1 },
+      { { VEND_ID_3GPP, 0, "Min-Requested-Bandwidth-UL" },  RULE_OPTIONAL, -1,  1 },
+      { { VEND_ID_3GPP, 0, "Min-Requested-Bandwidth-DL" },  RULE_OPTIONAL, -1,  1 },
+      { { VEND_ID_3GPP, 0, "Flow-Status" },                 RULE_OPTIONAL, -1,  1 },
+      { { VEND_ID_3GPP, 0, "Reservation-Priority" },        RULE_OPTIONAL, -1,  1 },
+      { { VEND_ID_3GPP, 0, "RS-Bandwidth" },                RULE_OPTIONAL, -1,  1 },
+      { { VEND_ID_3GPP, 0, "RR-Bandwidth" },                RULE_OPTIONAL, -1,  1 },
+      { { VEND_ID_3GPP, 0, "Codec-Data" },                  RULE_OPTIONAL, -1, -1 }
     };
 
     CHECK_DICT_SEARCH( DICT_AVP, AVP_BY_NAME_AND_VENDOR, &avp_req, &group_avp );
@@ -1438,15 +1438,15 @@ static int dict_rx_entry (char *conffile)
   */
   {
     struct dict_object *group_avp;
-    struct dict_avp_request avp_req = { VENDOR_3GPP_ID, 0, "Media-Sub-Component" };
+    struct dict_avp_request avp_req = { VEND_ID_3GPP, 0, "Media-Sub-Component" };
     struct local_rules_definition avp_rules[] = {
-      { { VENDOR_3GPP_ID, 0, "Flow-Number" },                 RULE_REQUIRED,  1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Flow-Description" },            RULE_OPTIONAL, -1,  2 },
-      { { VENDOR_3GPP_ID, 0, "Flow-Status" },                 RULE_OPTIONAL, -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Flow-Usage" },                  RULE_OPTIONAL, -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Max-Requested-Bandwidth-UL" },  RULE_OPTIONAL, -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Max-Requested-Bandwidth-DL" },  RULE_OPTIONAL, -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "AF-Signalling-Protocol" },      RULE_OPTIONAL, -1,  1 }
+      { { VEND_ID_3GPP, 0, "Flow-Number" },                 RULE_REQUIRED,  1,  1 },
+      { { VEND_ID_3GPP, 0, "Flow-Description" },            RULE_OPTIONAL, -1,  2 },
+      { { VEND_ID_3GPP, 0, "Flow-Status" },                 RULE_OPTIONAL, -1,  1 },
+      { { VEND_ID_3GPP, 0, "Flow-Usage" },                  RULE_OPTIONAL, -1,  1 },
+      { { VEND_ID_3GPP, 0, "Max-Requested-Bandwidth-UL" },  RULE_OPTIONAL, -1,  1 },
+      { { VEND_ID_3GPP, 0, "Max-Requested-Bandwidth-DL" },  RULE_OPTIONAL, -1,  1 },
+      { { VEND_ID_3GPP, 0, "AF-Signalling-Protocol" },      RULE_OPTIONAL, -1,  1 }
     };
 
     CHECK_DICT_SEARCH( DICT_AVP, AVP_BY_NAME_AND_VENDOR, &avp_req, &group_avp );
@@ -1463,12 +1463,12 @@ static int dict_rx_entry (char *conffile)
   */
   {
     struct dict_object *group_avp;
-    struct dict_avp_request avp_req = { VENDOR_3GPP_ID, 0, "Sponsored-Connectivity-Data" };
+    struct dict_avp_request avp_req = { VEND_ID_3GPP, 0, "Sponsored-Connectivity-Data" };
     struct local_rules_definition avp_rules[] = {
-      { { VENDOR_3GPP_ID, 0, "Sponsor-Identity" },                      RULE_OPTIONAL, -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Application-Service-Provider-Identity" }, RULE_OPTIONAL, -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Granted-Service-Unit" },                  RULE_OPTIONAL, -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Used-Service-Unit" },                     RULE_OPTIONAL, -1,  1 }
+      { { VEND_ID_3GPP, 0, "Sponsor-Identity" },                      RULE_OPTIONAL, -1,  1 },
+      { { VEND_ID_3GPP, 0, "Application-Service-Provider-Identity" }, RULE_OPTIONAL, -1,  1 },
+      { { VEND_ID_DIAM, 0, "Granted-Service-Unit" },                  RULE_OPTIONAL, -1,  1 },
+      { { VEND_ID_DIAM, 0, "Used-Service-Unit" },                     RULE_OPTIONAL, -1,  1 }
     };
 
     CHECK_DICT_SEARCH( DICT_AVP, AVP_BY_NAME_AND_VENDOR, &avp_req, &group_avp );
@@ -1521,43 +1521,43 @@ static int dict_rx_entry (char *conffile)
       CMD_FLAG_REQUEST | CMD_FLAG_PROXIABLE
     };
     struct local_rules_definition cmd_rules[] = {
-      { { VENDOR_DIAM_ID, 0, "Session-Id" },                  RULE_FIXED_HEAD,  1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Auth-Application-Id" },         RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Origin-Host" },                 RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Origin-Realm" },                RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Destination-Realm" },           RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Destination-Host" },            RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "IP-Domain-Id" },                RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Auth-Session-State" },          RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "AF-Application-Identifier" },   RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Media-Component-Description" }, RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_3GPP_ID, 0, "Service-Info-Status" },         RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "AF-Charging-Identifier" },      RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "SIP-Forking-Indication" },      RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Specific-Action" },             RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_DIAM_ID, 0, "Subscription-Id" },             RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_DIAM_ID, 0, "OC-Supported-Features" },       RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Supported-Features" },          RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_3GPP_ID, 0, "Reservation-Priority" },        RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Framed-IP-Address" },           RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Framed-IPv6-Prefix" },          RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_DIAM_ID, 0, "Called-Station-Id" },           RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Service-URN" },                 RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Sponsored-Connectivity-Data" }, RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "MPS-Identifier" },              RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "GCS-Identifier" },              RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "MCPTT-Identifier" },            RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Rx-Request-Type" },             RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Required-Access-Info" },        RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_3GPP_ID, 0, "Reference-Id" },                RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Origin-State-Id" },             RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Proxy-Info" },                  RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_DIAM_ID, 0, "Route-Record" },                RULE_OPTIONAL,   -1, -1 }
+      { { VEND_ID_DIAM, 0, "Session-Id" },                  RULE_FIXED_HEAD,  1,  1 },
+      { { VEND_ID_DIAM, 0, "Auth-Application-Id" },         RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Origin-Host" },                 RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Origin-Realm" },                RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Destination-Realm" },           RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Destination-Host" },            RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "IP-Domain-Id" },                RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Auth-Session-State" },          RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "AF-Application-Identifier" },   RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "Media-Component-Description" }, RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_3GPP, 0, "Service-Info-Status" },         RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "AF-Charging-Identifier" },      RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "SIP-Forking-Indication" },      RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "Specific-Action" },             RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_DIAM, 0, "Subscription-Id" },             RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_DIAM, 0, "OC-Supported-Features" },       RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "Supported-Features" },          RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_3GPP, 0, "Reservation-Priority" },        RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Framed-IP-Address" },           RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Framed-IPv6-Prefix" },          RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_DIAM, 0, "Called-Station-Id" },           RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "Service-URN" },                 RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "Sponsored-Connectivity-Data" }, RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "MPS-Identifier" },              RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "GCS-Identifier" },              RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "MCPTT-Identifier" },            RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "Rx-Request-Type" },             RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "Required-Access-Info" },        RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_3GPP, 0, "Reference-Id" },                RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Origin-State-Id" },             RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Proxy-Info" },                  RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_DIAM, 0, "Route-Record" },                RULE_OPTIONAL,   -1, -1 }
     };
 
     CHECK_DICT_NEW( DICT_COMMAND, &cmd_data, psoRxApp, &cmd );
     PARSE_loc_rules( cmd_rules, cmd );
-    REMOVE_RULE(274, VENDOR_DIAM_ID,cmd);
+    REMOVE_RULE(274, VEND_ID_DIAM,cmd);
   }
 
   /* 5.6.2 AA-Answer (AAA) command
@@ -1603,36 +1603,36 @@ static int dict_rx_entry (char *conffile)
       CMD_FLAG_PROXIABLE
     };
     struct local_rules_definition cmd_rules[] = {
-      { { VENDOR_DIAM_ID, 0, "Session-Id" },                          RULE_FIXED_HEAD,  1,  1 },
-      { { VENDOR_DIAM_ID, 0, "DRMP" },                                RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Auth-Application-Id" },                 RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Origin-Host" },                         RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Origin-Realm" },                        RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Result-Code" },                         RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Experimental-Result" },                 RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Auth-Session-State" },                  RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Access-Network-Charging-Identifier" },  RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_3GPP_ID, 0, "Access-Network-Charging-Address" },     RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Acceptable-Service-Info" },             RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "AN-GW-Address" },                       RULE_OPTIONAL,   -1,  2 },
-      { { VENDOR_3GPP_ID, 0, "AN-Trusted" },                          RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Service-Authorization-Info" },          RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "IP-CAN-Type" },                         RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "NetLoc-Access-Support" },               RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "RAT-Type" },                            RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Flows" },                               RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_DIAM_ID, 0, "OC-Supported-Features" },               RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "OC-OLR" },                              RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Supported-Features" },                  RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_DIAM_ID, 0, "Class" },                               RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_DIAM_ID, 0, "Error-Message" },                       RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Error-Reporting-Host" },                RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Failed-AVP" },                          RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_DIAM_ID, 0, "Origin-State-Id" },                     RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Redirect-Host" },                       RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_DIAM_ID, 0, "Redirect-Host-Usage" },                 RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Redirect-Max-Cache-Time" },             RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Proxy-Info" },                          RULE_OPTIONAL,   -1, -1 }
+      { { VEND_ID_DIAM, 0, "Session-Id" },                          RULE_FIXED_HEAD,  1,  1 },
+      { { VEND_ID_DIAM, 0, "DRMP" },                                RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Auth-Application-Id" },                 RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Origin-Host" },                         RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Origin-Realm" },                        RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Result-Code" },                         RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Experimental-Result" },                 RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Auth-Session-State" },                  RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "Access-Network-Charging-Identifier" },  RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_3GPP, 0, "Access-Network-Charging-Address" },     RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "Acceptable-Service-Info" },             RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "AN-GW-Address" },                       RULE_OPTIONAL,   -1,  2 },
+      { { VEND_ID_3GPP, 0, "AN-Trusted" },                          RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "Service-Authorization-Info" },          RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "IP-CAN-Type" },                         RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "NetLoc-Access-Support" },               RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "RAT-Type" },                            RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "Flows" },                               RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_DIAM, 0, "OC-Supported-Features" },               RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "OC-OLR" },                              RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "Supported-Features" },                  RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_DIAM, 0, "Class" },                               RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_DIAM, 0, "Error-Message" },                       RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Error-Reporting-Host" },                RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Failed-AVP" },                          RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_DIAM, 0, "Origin-State-Id" },                     RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Redirect-Host" },                       RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_DIAM, 0, "Redirect-Host-Usage" },                 RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Redirect-Max-Cache-Time" },             RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Proxy-Info" },                          RULE_OPTIONAL,   -1, -1 }
     };
 
     CHECK_DICT_NEW( DICT_COMMAND, &cmd_data, psoRxApp, &cmd );
@@ -1686,39 +1686,39 @@ static int dict_rx_entry (char *conffile)
       CMD_FLAG_REQUEST | CMD_FLAG_PROXIABLE
     };
     struct local_rules_definition cmd_rules[] = {
-      { { VENDOR_DIAM_ID, 0, "Session-Id" },                          RULE_FIXED_HEAD,  1,  1 },
-      { { VENDOR_DIAM_ID, 0, "DRMP" },                                RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Origin-Host" },                         RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Origin-Realm" },                        RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Destination-Realm" },                   RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Destination-Host" },                    RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Auth-Application-Id" },                 RULE_REQUIRED,    1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Specific-Action" },                     RULE_REQUIRED,    1, -1 },
-      { { VENDOR_DIAM_ID, 0, "OC-Supported-Features" },               RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Access-Network-Charging-Identifier" },  RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_3GPP_ID, 0, "Access-Network-Charging-Address" },     RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "AN-GW-Address" },                       RULE_OPTIONAL,   -1,  2 },
-      { { VENDOR_3GPP_ID, 0, "AN-Trusted" },                          RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Flows" },                               RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_DIAM_ID, 0, "Subscription-Id" },                     RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_3GPP_ID, 0, "Abort-Cause" },                         RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "IP-CAN-Type" },                         RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "NetLoc-Access-Support" },               RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "RAT-Type" },                            RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Sponsored-Connectivity-Data" },         RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "3GPP-User-Location-Info" },             RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "User-Location-Info-Time" },             RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "3GPP-MS-TimeZone" },                    RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "RAN-NAS-Release-Cause" },               RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_3GPP_ID, 0, "3GPP-SGSN-MCC-MNC" },                   RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "TWAN-Identifier" },                     RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "TCP-Source-Port" },                     RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "UDP-Source-Port" },                     RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "UE-Local-IP-Address" },                 RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Origin-State-Id" },                     RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Class" },                               RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_DIAM_ID, 0, "Proxy-Info" },                          RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_DIAM_ID, 0, "Route-Record" },                        RULE_OPTIONAL,   -1, -1 }
+      { { VEND_ID_DIAM, 0, "Session-Id" },                          RULE_FIXED_HEAD,  1,  1 },
+      { { VEND_ID_DIAM, 0, "DRMP" },                                RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Origin-Host" },                         RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Origin-Realm" },                        RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Destination-Realm" },                   RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Destination-Host" },                    RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Auth-Application-Id" },                 RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_3GPP, 0, "Specific-Action" },                     RULE_REQUIRED,    1, -1 },
+      { { VEND_ID_DIAM, 0, "OC-Supported-Features" },               RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "Access-Network-Charging-Identifier" },  RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_3GPP, 0, "Access-Network-Charging-Address" },     RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "AN-GW-Address" },                       RULE_OPTIONAL,   -1,  2 },
+      { { VEND_ID_3GPP, 0, "AN-Trusted" },                          RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "Flows" },                               RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_DIAM, 0, "Subscription-Id" },                     RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_3GPP, 0, "Abort-Cause" },                         RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "IP-CAN-Type" },                         RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "NetLoc-Access-Support" },               RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "RAT-Type" },                            RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "Sponsored-Connectivity-Data" },         RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "3GPP-User-Location-Info" },             RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "User-Location-Info-Time" },             RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "3GPP-MS-TimeZone" },                    RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "RAN-NAS-Release-Cause" },               RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_3GPP, 0, "3GPP-SGSN-MCC-MNC" },                   RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "TWAN-Identifier" },                     RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "TCP-Source-Port" },                     RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "UDP-Source-Port" },                     RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "UE-Local-IP-Address" },                 RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Origin-State-Id" },                     RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Class" },                               RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_DIAM, 0, "Proxy-Info" },                          RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_DIAM, 0, "Route-Record" },                        RULE_OPTIONAL,   -1, -1 }
     };
 
     CHECK_DICT_NEW( DICT_COMMAND, &cmd_data, psoRxApp, &cmd );
@@ -1758,25 +1758,25 @@ static int dict_rx_entry (char *conffile)
       CMD_FLAG_PROXIABLE
     };
     struct local_rules_definition cmd_rules[] = {
-      { { VENDOR_DIAM_ID, 0, "Session-Id" },                  RULE_FIXED_HEAD,  1,  1 },
-      { { VENDOR_DIAM_ID, 0, "DRMP" },                        RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Origin-Host" },                 RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Origin-Realm" },                RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Result-Code" },                 RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Experimental-Result" },         RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "OC-Supported-Features" },       RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "OC-OLR" },                      RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Media-Component-Description" }, RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_3GPP_ID, 0, "Service-URN" },                 RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Origin-State-Id" },             RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Class" },                       RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_DIAM_ID, 0, "Error-Message" },               RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Error-Reporting-Host" },        RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Redirect-Host" },               RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_DIAM_ID, 0, "Redirect-Host-Usage" },         RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Redirect-Max-Cache-Time" },     RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Failed-AVP" },                  RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_DIAM_ID, 0, "Proxy-Info" },                  RULE_OPTIONAL,   -1, -1 }
+      { { VEND_ID_DIAM, 0, "Session-Id" },                  RULE_FIXED_HEAD,  1,  1 },
+      { { VEND_ID_DIAM, 0, "DRMP" },                        RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Origin-Host" },                 RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Origin-Realm" },                RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Result-Code" },                 RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Experimental-Result" },         RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "OC-Supported-Features" },       RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "OC-OLR" },                      RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "Media-Component-Description" }, RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_3GPP, 0, "Service-URN" },                 RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Origin-State-Id" },             RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Class" },                       RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_DIAM, 0, "Error-Message" },               RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Error-Reporting-Host" },        RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Redirect-Host" },               RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_DIAM, 0, "Redirect-Host-Usage" },         RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Redirect-Max-Cache-Time" },     RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Failed-AVP" },                  RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_DIAM, 0, "Proxy-Info" },                  RULE_OPTIONAL,   -1, -1 }
     };
 
     CHECK_DICT_NEW( DICT_COMMAND, &cmd_data, psoRxApp, &cmd );
@@ -1811,20 +1811,20 @@ static int dict_rx_entry (char *conffile)
       CMD_FLAG_REQUEST | CMD_FLAG_PROXIABLE
     };
     struct local_rules_definition cmd_rules[] = {
-      { { VENDOR_DIAM_ID, 0, "Session-Id" },                          RULE_FIXED_HEAD,  1,  1 },
-      { { VENDOR_DIAM_ID, 0, "DRMP" },                                RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Origin-Host" },                         RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Origin-Realm" },                        RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Destination-Realm" },                   RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Auth-Application-Id" },                 RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Termination-Cause" },                   RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Destination-Host" },                    RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "OC-Supported-Features" },               RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Required-Access-Info" },                RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_DIAM_ID, 0, "Class" },                               RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_DIAM_ID, 0, "Origin-State-Id" },                     RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Proxy-Info" },                          RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_DIAM_ID, 0, "Route-Record" },                        RULE_OPTIONAL,   -1, -1 }
+      { { VEND_ID_DIAM, 0, "Session-Id" },                          RULE_FIXED_HEAD,  1,  1 },
+      { { VEND_ID_DIAM, 0, "DRMP" },                                RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Origin-Host" },                         RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Origin-Realm" },                        RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Destination-Realm" },                   RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Auth-Application-Id" },                 RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Termination-Cause" },                   RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Destination-Host" },                    RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "OC-Supported-Features" },               RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "Required-Access-Info" },                RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_DIAM, 0, "Class" },                               RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_DIAM, 0, "Origin-State-Id" },                     RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Proxy-Info" },                          RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_DIAM, 0, "Route-Record" },                        RULE_OPTIONAL,   -1, -1 }
     };
 
     CHECK_DICT_NEW( DICT_COMMAND, &cmd_data, psoRxApp, &cmd );
@@ -1872,33 +1872,33 @@ static int dict_rx_entry (char *conffile)
       CMD_FLAG_PROXIABLE
     };
     struct local_rules_definition cmd_rules[] = {
-      { { VENDOR_DIAM_ID, 0, "Session-Id" },                  RULE_FIXED_HEAD,  1,  1 },
-      { { VENDOR_DIAM_ID, 0, "DRMP" },                        RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Origin-Host" },                 RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Origin-Realm" },                RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Result-Code" },                 RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Error-Message" },               RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Error-Reporting-Host" },        RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "OC-Supported-Features" },       RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "OC-OLR" },                      RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Failed-AVP" },                  RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_3GPP_ID, 0, "Sponsored-Connectivity-Data" }, RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Origin-State-Id" },             RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "3GPP-User-Location-Info" },     RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "User-Location-Info-Time" },     RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "3GPP-MS-TimeZone" },            RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "RAN-NAS-Release-Cause" },       RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_3GPP_ID, 0, "3GPP-SGSN-MCC-MNC" },           RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "TWAN-Identifier" },             RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "TCP-Source-Port" },             RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "UDP-Source-Port" },             RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "UE-Local-IP-Address" },         RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "NetLoc-Access-Support" },       RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Class" },                       RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_DIAM_ID, 0, "Redirect-Host" },               RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_DIAM_ID, 0, "Redirect-Host-Usage" },         RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Redirect-Max-Cache-Time" },     RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Proxy-Info" },                  RULE_OPTIONAL,   -1, -1 }
+      { { VEND_ID_DIAM, 0, "Session-Id" },                  RULE_FIXED_HEAD,  1,  1 },
+      { { VEND_ID_DIAM, 0, "DRMP" },                        RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Origin-Host" },                 RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Origin-Realm" },                RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Result-Code" },                 RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Error-Message" },               RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Error-Reporting-Host" },        RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "OC-Supported-Features" },       RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "OC-OLR" },                      RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Failed-AVP" },                  RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_3GPP, 0, "Sponsored-Connectivity-Data" }, RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Origin-State-Id" },             RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "3GPP-User-Location-Info" },     RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "User-Location-Info-Time" },     RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "3GPP-MS-TimeZone" },            RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "RAN-NAS-Release-Cause" },       RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_3GPP, 0, "3GPP-SGSN-MCC-MNC" },           RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "TWAN-Identifier" },             RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "TCP-Source-Port" },             RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "UDP-Source-Port" },             RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "UE-Local-IP-Address" },         RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "NetLoc-Access-Support" },       RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Class" },                       RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_DIAM, 0, "Redirect-Host" },               RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_DIAM, 0, "Redirect-Host-Usage" },         RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Redirect-Max-Cache-Time" },     RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Proxy-Info" },                  RULE_OPTIONAL,   -1, -1 }
     };
 
     CHECK_DICT_NEW( DICT_COMMAND, &cmd_data, psoRxApp, &cmd );
@@ -1931,18 +1931,18 @@ static int dict_rx_entry (char *conffile)
       CMD_FLAG_REQUEST | CMD_FLAG_PROXIABLE
     };
     struct local_rules_definition cmd_rules[] = {
-      { { VENDOR_DIAM_ID, 0, "Session-Id" },            RULE_FIXED_HEAD,  1,  1 },
-      { { VENDOR_DIAM_ID, 0, "DRMP" },                  RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Origin-Host" },           RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Origin-Realm" },          RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Destination-Realm" },     RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Destination-Host" },      RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Auth-Application-Id" },   RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "OC-Supported-Features" }, RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_3GPP_ID, 0, "Abort-Cause" },           RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Origin-State-Id" },       RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Proxy-Info" },            RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_DIAM_ID, 0, "Route-Record" },          RULE_OPTIONAL,   -1, -1 }
+      { { VEND_ID_DIAM, 0, "Session-Id" },            RULE_FIXED_HEAD,  1,  1 },
+      { { VEND_ID_DIAM, 0, "DRMP" },                  RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Origin-Host" },           RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Origin-Realm" },          RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Destination-Realm" },     RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Destination-Host" },      RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Auth-Application-Id" },   RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "OC-Supported-Features" }, RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_3GPP, 0, "Abort-Cause" },           RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Origin-State-Id" },       RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Proxy-Info" },            RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_DIAM, 0, "Route-Record" },          RULE_OPTIONAL,   -1, -1 }
     };
 
     CHECK_DICT_NEW( DICT_COMMAND, &cmd_data, psoRxApp, &cmd );
@@ -1978,21 +1978,21 @@ static int dict_rx_entry (char *conffile)
       CMD_FLAG_PROXIABLE
     };
     struct local_rules_definition cmd_rules[] = {
-      { { VENDOR_DIAM_ID, 0, "Session-Id" },              RULE_FIXED_HEAD,  1,  1 },
-      { { VENDOR_DIAM_ID, 0, "DRMP" },                    RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Origin-Host" },             RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Origin-Realm" },            RULE_REQUIRED,    1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Result-Code" },             RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "OC-Supported-Features" },   RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "OC-OLR" },                  RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Origin-State-Id" },         RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Error-Message" },           RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Error-Reporting-Host" },    RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Failed-AVP" },              RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_DIAM_ID, 0, "Redirect-Host" },           RULE_OPTIONAL,   -1, -1 },
-      { { VENDOR_DIAM_ID, 0, "Redirect-Host-Usage" },     RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Redirect-Max-Cache-Time" }, RULE_OPTIONAL,   -1,  1 },
-      { { VENDOR_DIAM_ID, 0, "Proxy-Info" },              RULE_OPTIONAL,   -1, -1 }
+      { { VEND_ID_DIAM, 0, "Session-Id" },              RULE_FIXED_HEAD,  1,  1 },
+      { { VEND_ID_DIAM, 0, "DRMP" },                    RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Origin-Host" },             RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Origin-Realm" },            RULE_REQUIRED,    1,  1 },
+      { { VEND_ID_DIAM, 0, "Result-Code" },             RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "OC-Supported-Features" },   RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "OC-OLR" },                  RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Origin-State-Id" },         RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Error-Message" },           RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Error-Reporting-Host" },    RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Failed-AVP" },              RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_DIAM, 0, "Redirect-Host" },           RULE_OPTIONAL,   -1, -1 },
+      { { VEND_ID_DIAM, 0, "Redirect-Host-Usage" },     RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Redirect-Max-Cache-Time" }, RULE_OPTIONAL,   -1,  1 },
+      { { VEND_ID_DIAM, 0, "Proxy-Info" },              RULE_OPTIONAL,   -1, -1 }
     };
 
     CHECK_DICT_NEW( DICT_COMMAND, &cmd_data, psoRxApp, &cmd );
