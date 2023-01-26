@@ -1,9 +1,9 @@
 #ifndef _APP_RX_DICT_H_
 #define _APP_RX_DICT_H_
 
-#define VEND_ID_DIAM  0
-#define VEND_ID_3GPP  10415
-#define APP_ID_RX       16777236
+#define VEND_ID_DIAM	static_cast<uint32_t>(0)
+#define VEND_ID_3GPP	static_cast<uint32_t>(10415)
+#define APP_ID_RX		static_cast<uint32_t>(16777236)
 
 #define CMD_ID_AAR      265
 #define CMD_ID_STR      275
@@ -70,14 +70,14 @@
 /* Rule-Failure-Code */
 
 /* Media-Type */
-#define MT_AUDIO       0
-#define MT_VIDEO       1
-#define MT_DATA        2
-#define MT_APPLICATION 3
-#define MT_CONTROL     4
-#define MT_TEXT        5
-#define MT_MESSAGE     6
-#define MT_OTHER       static_cast<int>(0xFFFFFFFF)
+#define MT_AUDIO		static_cast<uint32_t>(0)
+#define MT_VIDEO		static_cast<uint32_t>(1)
+#define MT_DATA			static_cast<uint32_t>(2)
+#define MT_APPLICATION	static_cast<uint32_t>(3)
+#define MT_CONTROL		static_cast<uint32_t>(4)
+#define MT_TEXT			static_cast<uint32_t>(5)
+#define MT_MESSAGE		static_cast<uint32_t>(6)
+#define MT_OTHER		static_cast<uint32_t>(0xFFFFFFFF)
 /* Media-Type */
 
 #endif /* _APP_RX_DICT_H_ */
