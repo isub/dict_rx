@@ -1,9 +1,16 @@
+
 #ifndef _APP_RX_DICT_H_
 #define _APP_RX_DICT_H_
 
-#define VEND_ID_DIAM	static_cast<uint32_t>(0)
-#define VEND_ID_3GPP	static_cast<uint32_t>(10415)
-#define APP_ID_RX		static_cast<uint32_t>(16777236)
+#ifdef __cplusplus__
+#define static_type_spec(t,v) static_cast<t>(v)
+#else
+#define static_type_spec(t,v) (t)v
+#endif
+
+#define VEND_ID_DIAM	static_type_spec(uint32_t,0)
+#define VEND_ID_3GPP	static_type_spec(uint32_t,10415)
+#define APP_ID_RX		static_type_spec(uint32_t,16777236)
 
 #define CMD_ID_AAR      265
 #define CMD_ID_STR      275
@@ -15,6 +22,13 @@
 #define END_USER_SIP_URI  2
 #define END_USER_NAI      3
 #define END_USER_PRIVATE  4
+
+/* Supported-Features (Rx Supported-Feature-List #1, Vendor-Id 3gpp) */
+#define RX_SF_L1_REL8				static_type_spec(uint32_t,0x00000001)
+#define RX_SF_L1_REL9				static_type_spec(uint32_t,0x00000002)
+#define RX_SF_L1_PROV_AF_SIGNALFLOW	static_type_spec(uint32_t,0x00000004)
+#define RX_SF_L1_REL10				static_type_spec(uint32_t,0x00000010)
+#define RX_SF_L1_NET_LOC			static_type_spec(uint32_t,0x00000020)
 
 /* Experimental-Result-Code */
 #define ERC_INVALID_SERVICE_INFORMATION              5061
@@ -70,14 +84,14 @@
 /* Rule-Failure-Code */
 
 /* Media-Type */
-#define MT_AUDIO		static_cast<uint32_t>(0)
-#define MT_VIDEO		static_cast<uint32_t>(1)
-#define MT_DATA			static_cast<uint32_t>(2)
-#define MT_APPLICATION	static_cast<uint32_t>(3)
-#define MT_CONTROL		static_cast<uint32_t>(4)
-#define MT_TEXT			static_cast<uint32_t>(5)
-#define MT_MESSAGE		static_cast<uint32_t>(6)
-#define MT_OTHER		static_cast<uint32_t>(0xFFFFFFFF)
+#define MT_AUDIO		static_type_spec(uint32_t,0)
+#define MT_VIDEO		static_type_spec(uint32_t,1)
+#define MT_DATA			static_type_spec(uint32_t,2)
+#define MT_APPLICATION	static_type_spec(uint32_t,3)
+#define MT_CONTROL		static_type_spec(uint32_t,4)
+#define MT_TEXT			static_type_spec(uint32_t,5)
+#define MT_MESSAGE		static_type_spec(uint32_t,6)
+#define MT_OTHER		static_type_spec(uint32_t,0xFFFFFFFF)
 /* Media-Type */
 
 #endif /* _APP_RX_DICT_H_ */

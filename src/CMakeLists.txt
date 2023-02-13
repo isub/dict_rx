@@ -1,5 +1,5 @@
 # The dict_rx extension
-PROJECT("Rx Dictionary" C)
+PROJECT("Rx Dictionary" CXX)
 
 #SET(CMAKE_BUILD_TYPE DebugValgrind)
 SET(CMAKE_CXX_FLAGS "--std=c++0x -g -Wall -Wextra")
